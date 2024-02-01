@@ -1,14 +1,28 @@
-package main
+package pkg
 
-import(
-	"net/http"
+import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 
-	"github.com/21b030939/tsis-one/pkg"
 	"github.com/21b030939/tsis-one/internal/response"
+	"github.com/21b030939/tsis-one/internal/music"
+	"github.com/gorilla/mux"
 )
+
+func Song(w http.ResponseWriter, r *http.Request){
+	w.Header().Set("Content-Type", "application/json")
+  	params := mux.Vars(r)
+	songs := response.PrepareResponseSongs()
+  	for _, item := range songs {
+    	if item.Id == params["id"] {
+      		json.NewEncoder(w).Encode(item)
+      		return
+    	}
+  	}
+  	json.NewEncoder(w).Encode(&music.Song{})
+}
 
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	log.Println("entering health check end point")
@@ -18,7 +32,7 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 
 func Songs(w http.ResponseWriter, r *http.Request) {
 	log.Println("entering persons end point")
-	var responseSongs pkg.ResponseSongs
+	var responseSongs ResponseSongs
 	songs := response.PrepareResponseSongs()
 
 	responseSongs.Songs = songs
@@ -35,7 +49,7 @@ func Songs(w http.ResponseWriter, r *http.Request) {
 
 func Artists(w http.ResponseWriter, r *http.Request) {
 	log.Println("entering persons end point")
-	var responseArtists pkg.ResponseArtists
+	var responseArtists ResponseArtists
 	artists := response.PrepareResponseArtists()
 
 	responseArtists.Artists = artists
