@@ -1,13 +1,22 @@
-package response
+package pkg
 
-import (
-	"github.com/21b030939/tsis-one/internal/music"
-)
+type Artist struct {
+	Id        string `json:"id"`
+	FirstName string `json:"first_name"`
+	SureName  string `json:"sure_name"`
+	BandName  string `json:"band_name"`
+}
 
-func PrepareResponseSongs() []music.Song {
-	var songs []music.Song
+type Song struct {
+	Id     string `json:"id"`
+	Name   string `json:"name"`
+	Artist string `json:"artist"`
+}
 
-	var song music.Song
+func PrepareResponseSongs() []Song {
+	var songs []Song
+
+	var song Song
 	song.Id = "1"
 	song.Name = "Highway To Hell"
 	song.Artist = "AC/DC"
@@ -25,10 +34,10 @@ func PrepareResponseSongs() []music.Song {
 	return songs
 }
 
-func PrepareResponseArtists() []music.Artist {
-	var artists []music.Artist
+func PrepareResponseArtists() []Artist {
+	var artists []Artist
 
-	var artist music.Artist
+	var artist Artist
 	artist.Id = "1"
 	artist.FirstName = "Angus"
 	artist.SureName = "Young"
